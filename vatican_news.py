@@ -2,6 +2,7 @@ import requests
 import bs4 as bs
 from dateutil import parser
 import uuid
+from pytz import timezone
 
 class VaticanNews():
     def __init__(self):
@@ -27,6 +28,7 @@ class Item:
         self.title = title.strip()
         self.link = link
         self.pubDate = parser.parse(pubDate.strip())
+        self.pubDate = self.pubDate.astimezone(timezone('US/Eastern'))
         self.pubDate = self.pubDate.strftime("%b %d, %Y %I:%M%p")
 
         desc = desc.strip()
