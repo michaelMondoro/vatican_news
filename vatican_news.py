@@ -9,7 +9,7 @@ class VaticanNews():
         self.articles = []
         self.daily_bulletin_url = "https://press.vatican.va/content/salastampa/en/bollettino.feedrss.xml"
         self.news_url = "https://www.vaticannews.va/en.rss.xml"
-
+        self.dates = []
 
     def get_news(self):
         self.articles = []
@@ -19,6 +19,10 @@ class VaticanNews():
         for item in items:
             self.articles.append(Item(item.find('title').text, item.find('pubDate').text, desc=item.find('description').text, link=item.find("link").text))
 
+        for a in self.articles:
+            if a.pubDate.split(",")[0] not in self.dates:
+                self.dates.append(a.pubDate.split(",")[0])
+        
         return self.articles
 
 
