@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html data-theme="">
+<head>
+    <title>vatican</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='pico.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+</head>
+<body>
+    
+    <main class="container" style="flex-direction: column!important;">
+        <section></section>
+        <centered>
+            <img style="width: 3em;" src="https://upload.wikimedia.org/wikipedia/commons/8/81/Emblem_of_the_Papacy_SE.svg">
+            <h1>Vatican News</h1>
+        </centered>
+        <left>
+            <details class="date_dropdown" role="list" style="width: 25%;">
+                <summary aria-haspopup="listbox">Date</summary>
+                <ul role="listbox">
+                    <li><a onclick="date_select(this)">All</a></li>
+                    {% for date in dates%}
+                        <li><a onclick="date_select(this)">{{date}}</a></li>
+                    {% endfor %}
+                </ul>
+            </details>
+            <p>Daily articles from <a href="https://www.vaticannews.va" target="_blank">vaticannews.va</a></p>
+        </left>
+        <!-- <left><p></p></left> -->
+        <!-- <left><p>Articles: {{articles | length}}</p></left> -->
+        
+        {% for article in articles%}
+        {% if loop.index < 10%}<article data-date="{{article.pubDate}}">{% else %}<article data-date="{{article.pubDate}}" class="disabled">{% endif %}
+                <header>
+                    <a id="{{article.id}}" href="{{article.link}}" target="_blank">{{article.title}}</a>
+                    <span class="date">{{article.pubDate}}</span>
+                </header>
+                <p>{{article.desc}}</p>
+                <div role="button" data-id="{{article.id}}" onclick="summarize(this)">Summarize</div>
+            </article>
+        {% endfor %}
+
+        <right><div onclick="load_more()" role="button">Load More</div></right>
+        <section></section>
+    </main>
+</body>
+</html>
