@@ -1,3 +1,4 @@
+torch
 bs4
 flask
 transformers
