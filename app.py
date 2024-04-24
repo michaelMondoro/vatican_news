@@ -5,12 +5,10 @@ import bs4 as bs
 from vatican_news import VaticanNews
 from transformers import pipeline
 
+print("Initializing . . .")
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 news = VaticanNews()
 app = Flask(__name__)
-
-print("Initialized...")
-
 
 @app.route("/summarize", methods=["POST"])
 def summarize():
