@@ -5,4 +5,3 @@ transformers
 pytz
 python-dateutil
 requests
-gunicorn
