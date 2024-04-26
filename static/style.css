@@ -27,7 +27,7 @@ a:hover {
 
 article {
     width: 90%!important;
-    margin: 20px!important;
+    margin: 1em!important;
 }
 
 header, footer {
@@ -46,7 +46,7 @@ footer {
 /* New Ones */
 .date {
     float: right;
-    font-size: 14px!important;
+    font-size: .8em!important;
     color: hsl(205, 20%, 50%)!important;
 }
 
@@ -65,4 +65,3 @@ right {
 .disabled {
     display: none;
 }
-
