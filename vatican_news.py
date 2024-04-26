@@ -3,6 +3,7 @@ import bs4 as bs
 from dateutil import parser
 import uuid
 from pytz import timezone
+from transformers import pipeline
 
 class VaticanNews():
     def __init__(self):
@@ -10,6 +11,8 @@ class VaticanNews():
         self.daily_bulletin_url = "https://press.vatican.va/content/salastampa/en/bollettino.feedrss.xml"
         self.news_url = "https://www.vaticannews.va/en.rss.xml"
         self.dates = []
+        self.summaries = []
+        self.summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
     def get_news(self):
         self.articles = []
@@ -25,7 +28,20 @@ class VaticanNews():
         
         return self.articles
 
+    def get_summary(self, url):
+        print("Getting article: " + url)
+        res = requests.get(url)
+        soup = bs.BeautifulSoup(res.content, "html.parser")
+        text = soup.find("div", {"class": "article__text"}).text
+        try:
+            summary = self.summarizer(text, max_length=400, min_length=150, do_sample=False)
+        except Exception:
+            print("truncated...")
+            summary = self.summarizer(text, max_length=400, min_length=150, do_sample=False, truncation=True)
 
+        self.summaries.append({"name" : url,"summary" : summary[0]['summary_text']})
+        return summary[0]['summary_text']
+    
 class Item:
     def __init__(self, title, pubDate, desc=None, link=None):
         self.id = str(uuid.uuid4())

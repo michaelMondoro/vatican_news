@@ -1,9 +1,7 @@
 from flask import Flask
-from flask import render_template, request, jsonify
-import requests 
+from flask import render_template, request
 import bs4 as bs
 from vatican_news import VaticanNews
-from transformers import pipeline
 
 print("Initializing . . .")
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
@@ -13,18 +11,8 @@ app = Flask(__name__)
 @app.route("/summarize", methods=["POST"])
 def summarize():
     url = request.args.get('url')
-    print("Getting article: " + url)
-    res = requests.get(url)
-    soup = bs.BeautifulSoup(res.content, "html.parser")
-    text = soup.find("div", {"class": "article__text"}).text
-    try:
-        summary = summarizer(text, max_length=400, min_length=150, do_sample=False)
-    except Exception:
-        print("truncated...")
-        summary = summarizer(text, max_length=400, min_length=150, do_sample=False, truncation=True)
-
-    print("SUMMARIZED")
-    return {"summary" : summary[0]['summary_text']}
+    summary = news.get_summary(url)
+    return {"summary" : summary}
 
 @app.route("/")
 def home():
