@@ -4,7 +4,6 @@ import bs4 as bs
 from vatican_news import VaticanNews
 
 print("Initializing . . .")
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 news = VaticanNews()
 app = Flask(__name__)
 
