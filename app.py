@@ -1,17 +1,19 @@
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, jsonify
 import bs4 as bs
 from vatican_news import VaticanNews
 
 print("Initializing . . .")
 news = VaticanNews()
 app = Flask(__name__)
-
+@app.route("/hi")
+def hi():
+    return jsonify({'hi':'hi'})
 @app.route("/summarize", methods=["POST"])
 def summarize():
     url = request.args.get('url')
     summary = news.get_summary(url)
-    return {"summary" : summary}
+    return jsonify({"summary" : summary})
 
 @app.route("/")
 def home():
